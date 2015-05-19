@@ -1,0 +1,88 @@
+Challenge Description:
+
+Write a program which prints all the permutations of a string in alphabetical order. We consider that digits < upper case letters < lower case letters. The sorting should be performed in ascending order.
+
+Input sample:
+hat
+
+abc
+
+Zu6
+
+Your program should accept a file as its first argument. The file contains input strings, one per line.
+
+For example:
+Output sample:
+
+aht,ath,hat,hta,tah,tha
+
+abc,acb,bac,bca,cab,cba
+
+6Zu,6uZ,Z6u,Zu6,u6Z,uZ6
+
+Print to stdout the permutations of the string separated by comma, in alphabetical order.
+
+
+package core;
+import java.io.*;
+import java.util.*;
+public class Main
+{
+	public static ArrayList<String> res=new ArrayList<String>();
+	public static String arranged(char[] ch)
+	{
+		Arrays.sort(ch);
+		return String.valueOf(ch);
+	}
+	
+	public static void strPerm(String fixedChar,String userStr){
+		if (userStr.length()==0){
+		res.add(fixedChar);
+			//System.out.print(fixedChar+",");
+		}
+		else
+		{
+			for(int j=0;j<userStr.length();j++){
+				/*String fixed=fixedChar+userStr.charAt(j);
+				String prev=userStr.substring(0, j);
+				String next=userStr.substring(j+1);
+				String rem=prev+next;
+				System.out.println(prev+"----"+next);
+				System.out.println(fixed+"    "+rem);*/
+				strPerm(fixedChar+userStr.charAt(j),userStr.substring(0, j)+userStr.substring(j+1));
+				//strPerm(fixed,rem);
+				
+			}
+		}
+			
+		
+	}
+	public static void main(String[] args) throws IOException{
+        File file = new File("C:/eclipseproj/core/src/core/test.txt");
+	String line=null;
+	BufferedReader buff=new BufferedReader(new FileReader(file));
+	while((line=buff.readLine())!=null){
+		//split the line into the given array
+		
+		if(line.trim().length()>0){					
+		
+//			System.out.println(line+" : ");
+			String numbArranged=arranged(line.replaceAll("[^0-9]", "").toCharArray());
+			String Upwd=arranged(line.replaceAll("[^A-Z]", "").toCharArray());
+			String smallwd=arranged(line.replaceAll("[0-9A-Z]", "").toCharArray());
+			String orderedLine=arranged(line.replaceAll("[^0-9]", "").toCharArray())+ arranged(line.replaceAll("[^A-Z]", "").toCharArray())+arranged(line.replaceAll("[0-9A-Z]", "").toCharArray());
+			strPerm("",orderedLine);
+	}
+		System.out.print(res.get(0));
+		for(int j=1;j<res.size();j++)
+		{
+			System.out.print(","+res.get(j));
+		}
+		
+		System.out.println();
+		res.clear();
+	}
+	buff.close();
+	
+	}
+}
